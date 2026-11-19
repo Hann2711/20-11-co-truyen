@@ -1,0 +1,960 @@
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#f9eaf0">
+<title>Gửi Cô – 20/11 | Tập thể 8C5</title>
+<meta name="description" content="Món quà tri ân của tập thể 8C5 gửi đến cô nhân ngày Nhà giáo Việt Nam 20/11.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700&family=Great+Vibes&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --pink: #d99db5;
+  --pink-dark: #a86f8b;
+  --cream: #fffaf4;
+  --lavender: #e8def0;
+  --gold: #c6a16c;
+  --ink: #705568;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; min-height: 100%; }
+body {
+  font-family: "Be Vietnam Pro", sans-serif;
+  color: var(--ink);
+  overflow: hidden;
+  background: #f9eaf0;
+}
+
+button { font: inherit; }
+
+#app {
+  position: relative;
+  min-height: 100svh;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse at 10% 15%, rgba(255,255,255,.95), transparent 35%),
+    radial-gradient(ellipse at 90% 80%, rgba(255,255,255,.7), transparent 35%),
+    linear-gradient(135deg, #fff8f2, #f4dce8 55%, #e9e0f1);
+}
+
+#app::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: .3;
+  background-image: radial-gradient(#fff 1px, transparent 1px);
+  background-size: 34px 34px;
+}
+
+.screen {
+  position: absolute;
+  inset: 0;
+  padding: 65px 22px 95px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  opacity: 0;
+  visibility: hidden;
+  transform: scale(1.025) translateY(15px);
+  transition: opacity .8s ease, transform .9s ease, visibility .8s;
+  overflow-y: auto;
+}
+
+.screen.active {
+  opacity: 1;
+  visibility: visible;
+  transform: scale(1) translateY(0);
+  z-index: 2;
+}
+
+.inner {
+  position: relative;
+  z-index: 3;
+  width: min(850px, 100%);
+  margin: auto;
+}
+
+.script { font-family: "Great Vibes", cursive; }
+.serif { font-family: "Playfair Display", serif; }
+
+.eyebrow {
+  font-size: 10px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--pink-dark);
+  font-weight: 600;
+}
+
+h1, h2, p { overflow-wrap: break-word; }
+
+.big-script {
+  font-size: clamp(42px, 8vw, 78px);
+  color: var(--pink-dark);
+  font-weight: 400;
+  line-height: 1.2;
+  margin: 12px 0;
+}
+
+.section-title {
+  font-family: "Playfair Display", serif;
+  color: #a77390;
+  font-size: clamp(27px, 5vw, 43px);
+  font-weight: 500;
+  margin: 10px 0;
+}
+
+.description {
+  max-width: 570px;
+  margin: 15px auto 25px;
+  color: #927b8b;
+  font-size: 13px;
+  line-height: 2;
+}
+
+.gold-line {
+  width: 85px;
+  height: 1px;
+  margin: 20px auto;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+}
+
+.btn {
+  border: 1px solid rgba(255,255,255,.8);
+  border-radius: 50px;
+  padding: 13px 27px;
+  background: linear-gradient(135deg, #dba9bd, #b77d9a);
+  color: white;
+  font-size: 12px;
+  letter-spacing: .5px;
+  box-shadow: 0 9px 25px rgba(166,108,139,.22);
+  cursor: pointer;
+  transition: .3s;
+}
+
+.btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 13px 30px rgba(166,108,139,.3);
+}
+
+.btn-light {
+  background: rgba(255,255,255,.5);
+  color: var(--pink-dark);
+  border: 1px solid rgba(183,125,154,.4);
+  box-shadow: none;
+}
+
+.top-label {
+  position: absolute;
+  top: 22px;
+  left: 0;
+  right: 0;
+  font-size: 9px;
+  letter-spacing: 3px;
+  color: #a78b9c;
+  z-index: 4;
+}
+
+/* ÁNH SÁNG */
+.light {
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.5);
+  filter: blur(75px);
+  pointer-events: none;
+  animation: glow 6s ease-in-out infinite alternate;
+}
+.light.one { left: -170px; top: 5%; }
+.light.two { right: -170px; bottom: 5%; animation-delay: 2s; }
+
+@keyframes glow {
+  from { opacity: .3; transform: scale(.8); }
+  to { opacity: .8; transform: scale(1.2); }
+}
+
+/* CÁNH HOA */
+#petals {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.petal {
+  position: absolute;
+  top: -30px;
+  width: 12px;
+  height: 17px;
+  border-radius: 90% 10% 80% 20%;
+  background: linear-gradient(135deg, #fff, #e8aec4);
+  opacity: .7;
+  animation: fall linear infinite;
+}
+
+@keyframes fall {
+  to { transform: translate(100px, 110vh) rotate(650deg); opacity: 0; }
+}
+
+/* 01 – PHONG THƯ */
+.envelope-wrap {
+  width: min(330px, 82vw);
+  height: 230px;
+  margin: 30px auto;
+  position: relative;
+  filter: drop-shadow(0 15px 20px rgba(150,99,129,.2));
+}
+
+.envelope {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 180px;
+  background: linear-gradient(135deg, #f5d6e2, #dfadc2);
+  border-radius: 5px 5px 12px 12px;
+  z-index: 2;
+}
+
+.envelope::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  border-left: 165px solid transparent;
+  border-right: 165px solid transparent;
+  border-bottom: 115px solid #e7b6ca;
+  z-index: 4;
+}
+
+.flap {
+  position: absolute;
+  top: 50px;
+  left: 0;
+  width: 0;
+  height: 0;
+  border-left: 165px solid transparent;
+  border-right: 165px solid transparent;
+  border-top: 115px solid #f4cbd9;
+  transform-origin: top;
+  transition: transform 1s ease;
+  z-index: 6;
+}
+
+.letter-peek {
+  position: absolute;
+  left: 9%;
+  top: 55px;
+  width: 82%;
+  height: 140px;
+  padding: 20px 10px;
+  border-radius: 5px;
+  background: #fffaf5;
+  color: #b47d98;
+  font-size: 27px;
+  transition: transform 1s ease;
+  z-index: 1;
+}
+
+.seal {
+  position: absolute;
+  z-index: 7;
+  left: 50%;
+  top: 125px;
+  transform: translateX(-50%);
+  width: 47px;
+  height: 47px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: radial-gradient(circle at 30% 30%, #e8bdcc, #ae6f8d);
+  color: white;
+  font-size: 22px;
+  transition: opacity .5s;
+}
+
+.envelope-wrap.opened .flap { transform: rotateX(180deg); }
+.envelope-wrap.opened .letter-peek { transform: translateY(-95px); }
+.envelope-wrap.opened .seal { opacity: 0; }
+
+/* 02 – CÂU CHUYỆN */
+.story-number {
+  font-family: "Playfair Display", serif;
+  font-size: clamp(75px, 15vw, 145px);
+  line-height: 1;
+  background: linear-gradient(130deg, #b47b98, #e4bf8c, #b47b98);
+  color: transparent;
+  background-clip: text;
+}
+
+/* 04 – LÁ THƯ */
+.letter-card {
+  max-width: 700px;
+  margin: 25px auto;
+  padding: clamp(25px, 6vw, 52px);
+  text-align: left;
+  background: rgba(255,252,247,.86);
+  border: 1px solid rgba(196,157,128,.4);
+  box-shadow: 0 18px 50px rgba(145,102,130,.12);
+  border-radius: 5px;
+  position: relative;
+}
+
+.letter-card h3 {
+  font-family: "Great Vibes", cursive;
+  font-weight: 400;
+  font-size: 43px;
+  color: #b47b97;
+  text-align: center;
+  margin: 0 0 22px;
+}
+
+.letter-card p {
+  font-size: 12px;
+  line-height: 2.1;
+  color: #786575;
+  margin: 0 0 14px;
+}
+
+.signature {
+  text-align: right;
+  font-family: "Great Vibes", cursive;
+  font-size: 29px;
+  color: #ad7691;
+}
+
+/* 05 – ĐIỀU TRÂN QUÝ */
+.value-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+  max-width: 650px;
+  margin: 30px auto;
+}
+
+.value-card {
+  padding: 20px 15px;
+  border-radius: 14px;
+  border: 1px solid rgba(190,145,170,.25);
+  background: rgba(255,255,255,.52);
+  box-shadow: 0 8px 25px rgba(150,100,130,.08);
+  transition: .3s;
+}
+
+.value-card:hover { transform: translateY(-5px); }
+.value-card .icon { font-size: 27px; }
+.value-card h3 { font-family: "Playfair Display", serif; color: #a77390; font-size: 16px; }
+.value-card p { font-size: 11px; line-height: 1.8; color: #917b8c; }
+
+/* 06 – ALBUM */
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+  max-width: 850px;
+  margin: 30px auto;
+}
+
+.photo-card {
+  background: rgba(255,255,255,.85);
+  padding: 9px 9px 15px;
+  box-shadow: 0 10px 25px rgba(140,97,126,.13);
+  transform: rotate(var(--tilt));
+  transition: .4s;
+}
+
+.photo-card:hover {
+  transform: translateY(-7px) rotate(0deg) scale(1.02);
+}
+
+.photo-frame {
+  height: 165px;
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, #f1dce6, #e5def0);
+}
+
+.photo-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  position: relative;
+  z-index: 2;
+}
+
+.photo-placeholder {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 10px;
+  font-family: "Playfair Display", serif;
+  font-size: 12px;
+  line-height: 1.8;
+  color: #a57893;
+}
+
+.photo-caption {
+  font-family: "Great Vibes", cursive;
+  font-size: 23px;
+  color: #a87591;
+  margin-top: 10px;
+}
+
+/* 07 – TÂM TÌNH */
+.quote-card {
+  max-width: 700px;
+  margin: 30px auto;
+  padding: 35px 25px;
+  border-radius: 15px;
+  background: rgba(255,255,255,.5);
+  border: 1px solid rgba(255,255,255,.8);
+  box-shadow: 0 15px 45px rgba(140,100,130,.1);
+}
+
+.quote-mark {
+  font-family: "Playfair Display", serif;
+  font-size: 65px;
+  color: #d5a8ba;
+  line-height: .8;
+}
+
+.quote-card p {
+  font-family: "Playfair Display", serif;
+  font-size: clamp(17px, 3vw, 23px);
+  line-height: 1.9;
+  color: #856b7d;
+}
+
+/* 08 – LỜI CHÚC */
+.wishes {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  max-width: 760px;
+  margin: 30px auto;
+}
+
+.wish {
+  min-height: 115px;
+  padding: 15px 7px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  border-radius: 13px;
+  border: 1px solid rgba(190,145,170,.3);
+  background: rgba(255,255,255,.6);
+  transition: .3s;
+}
+
+.wish:hover { transform: translateY(-5px); background: white; }
+.wish b { font-size: 25px; }
+.wish span { font-size: 11px; color: #8e7487; }
+
+/* 09 – TRÁI TIM HOA */
+.heart {
+  width: min(390px, 85vw);
+  height: 290px;
+  margin: 10px auto;
+  position: relative;
+}
+
+.heart-flower {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  font-size: 21px;
+  animation: flowerPulse 3s ease-in-out infinite alternate;
+  filter: drop-shadow(0 3px 5px rgba(177,107,143,.2));
+}
+
+@keyframes flowerPulse {
+  from { margin-top: -2px; }
+  to { margin-top: 4px; }
+}
+
+.final-title {
+  font-family: "Great Vibes", cursive;
+  font-size: clamp(48px, 9vw, 76px);
+  color: #aa718d;
+  margin: 0;
+}
+
+.final-note {
+  color: #927b8d;
+  font-size: 12px;
+  line-height: 2;
+  max-width: 500px;
+  margin: 15px auto 22px;
+}
+
+/* ĐIỀU HƯỚNG */
+.controls {
+  position: fixed;
+  z-index: 40;
+  bottom: 17px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  background: rgba(255,250,250,.78);
+  border: 1px solid rgba(255,255,255,.9);
+  border-radius: 50px;
+  backdrop-filter: blur(14px);
+  box-shadow: 0 6px 25px rgba(130,90,120,.13);
+}
+
+.dot {
+  width: 7px;
+  height: 7px;
+  padding: 0;
+  border: 0;
+  border-radius: 20px;
+  background: #d8bdcd;
+  cursor: pointer;
+  transition: .3s;
+}
+
+.dot.active {
+  width: 22px;
+  background: #b47b97;
+}
+
+.music {
+  position: fixed;
+  z-index: 50;
+  right: 17px;
+  bottom: 16px;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 1px solid white;
+  background: rgba(255,250,250,.8);
+  color: #a87591;
+  cursor: pointer;
+}
+
+.music.playing { animation: rotate 5s linear infinite; }
+@keyframes rotate { to { transform: rotate(360deg); } }
+
+@media(max-width: 650px) {
+  .screen { padding: 60px 17px 90px; }
+  .gallery { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  .photo-frame { height: 135px; }
+  .wishes { grid-template-columns: repeat(2, 1fr); }
+  .value-grid { gap: 9px; }
+  .value-card { padding: 14px 9px; }
+  .letter-card p { font-size: 11px; }
+  .controls { bottom: 13px; gap: 7px; padding: 9px 11px; }
+  .music { bottom: 13px; right: 10px; }
+}
+
+@media(max-width: 360px) {
+  .photo-frame { height: 115px; }
+  .dot { width: 6px; height: 6px; }
+}
+</style>
+</head>
+
+<body>
+<div id="app">
+  <div class="light one"></div>
+  <div class="light two"></div>
+  <div id="petals"></div>
+
+  <!-- 01: PHONG THƯ -->
+  <section class="screen active" id="s1">
+    <div class="inner">
+      <div class="eyebrow">A little gift from 8C5</div>
+      <h1 class="big-script">Một món quà dành tặng cô</h1>
+      <p class="description">Có một điều chúng em đã muốn gửi đến cô từ rất lâu...</p>
+      <div class="envelope-wrap" id="envelope">
+        <div class="letter-peek script">Gửi cô yêu quý...</div>
+        <div class="envelope"></div>
+        <div class="flap"></div>
+        <div class="seal">♡</div>
+      </div>
+      <p class="description">Một chiếc phong thư nhỏ, chứa đựng thật nhiều yêu thương.</p>
+      <button class="btn" onclick="openLetter()">MỞ PHONG THƯ ✧</button>
+    </div>
+  </section>
+
+  <!-- 02: CÂU CHUYỆN -->
+  <section class="screen" id="s2">
+    <div class="top-label">CHAPTER 01 · THE BEGINNING</div>
+    <div class="inner">
+      <div class="eyebrow">A story of gratitude</div>
+      <div class="story-number">20.11</div>
+      <h2 class="big-script">Một câu chuyện bắt đầu...</h2>
+      <div class="gold-line"></div>
+      <p class="description">
+        Có những người không tạo nên phép màu bằng đũa thần,
+        mà bằng sự tận tâm, kiên nhẫn và tình yêu thương.
+        Với chúng em, cô chính là một người như thế.
+      </p>
+      <button class="btn" onclick="next()">Tiếp tục câu chuyện →</button>
+    </div>
+  </section>
+
+  <!-- 03: DÀNH TẶNG CÔ -->
+  <section class="screen" id="s3">
+    <div class="top-label">CHAPTER 02 · FOR OUR TEACHER</div>
+    <div class="inner">
+      <div class="eyebrow">Vietnamese Teachers' Day</div>
+      <div class="story-number">20</div>
+      <h1 class="section-title">THÁNG 11 · NGÀY TRI ÂN</h1>
+      <h2 class="big-script">Dành tặng cô!</h2>
+      <div class="gold-line"></div>
+      <p class="description">
+        Nhân ngày Nhà giáo Việt Nam 20/11,
+        tập thể lớp 8C5 muốn gửi đến cô món quà nhỏ
+        thay cho những lời yêu thương và biết ơn chân thành nhất.
+      </p>
+      <p class="eyebrow">FROM CLASS 8C5 WITH LOVE</p>
+      <button class="btn" onclick="next()">Đọc lời chúng em →</button>
+    </div>
+  </section>
+
+  <!-- 04: LÁ THƯ -->
+  <section class="screen" id="s4">
+    <div class="top-label">CHAPTER 03 · A LETTER FOR YOU</div>
+    <div class="inner">
+      <div class="eyebrow">Words from our hearts</div>
+      <h2 class="section-title">Lá thư gửi cô</h2>
+      <div class="letter-card">
+        <h3>Gửi cô kính yêu!</h3>
+        <p>
+          Cô thân mến!
+        </p>
+        <p>
+          Có lẽ đôi khi chúng em chưa đủ ngoan, chưa đủ trưởng thành
+          để hiểu hết những điều cô đã dành cho lớp. Nhưng chúng em
+          luôn biết rằng, phía sau mỗi bài giảng là sự tận tâm,
+          phía sau mỗi lời nhắc nhở là sự quan tâm và phía sau
+          những tháng ngày đến lớp là biết bao yêu thương cô gửi gắm.
+        </p>
+        <p>
+          Cảm ơn cô vì đã luôn kiên nhẫn đồng hành, dìu dắt và
+          truyền cho chúng em không chỉ kiến thức mà còn cả những
+          bài học quý giá trong cuộc sống.
+        </p>
+        <p>
+          Nhân ngày 20/11, chúng em kính chúc cô luôn mạnh khỏe,
+          hạnh phúc và mãi giữ được nụ cười rạng rỡ trên môi.
+        </p>
+        <p>
+          Mong rằng cô sẽ luôn cảm nhận được tình cảm mà tập thể
+          8C5 dành cho cô, hôm nay và cả những ngày sau nữa.
+        </p>
+        <div class="signature">Tập thể 8C5 thương gửi cô ♡</div>
+      </div>
+      <button class="btn" onclick="next()">Còn nhiều điều muốn nói →</button>
+    </div>
+  </section>
+
+  <!-- 05: ĐIỀU TRÂN QUÝ -->
+  <section class="screen" id="s5">
+    <div class="top-label">CHAPTER 04 · LITTLE THINGS WE CHERISH</div>
+    <div class="inner">
+      <div class="eyebrow">Thank you for everything</div>
+      <h2 class="section-title">Những điều chúng em trân quý</h2>
+      <p class="description">Có những điều giản dị nhưng sẽ luôn ở lại trong ký ức của chúng em.</p>
+      <div class="value-grid">
+        <div class="value-card">
+          <div class="icon">🌷</div>
+          <h3>Sự tận tâm</h3>
+          <p>Cảm ơn cô vì luôn hết lòng trong từng bài giảng.</p>
+        </div>
+        <div class="value-card">
+          <div class="icon">🕊️</div>
+          <h3>Sự kiên nhẫn</h3>
+          <p>Cảm ơn cô vì đã bao dung và kiên nhẫn với chúng em.</p>
+        </div>
+        <div class="value-card">
+          <div class="icon">✨</div>
+          <h3>Sự dìu dắt</h3>
+          <p>Cảm ơn cô vì đã chỉ bảo chúng em từng ngày.</p>
+        </div>
+        <div class="value-card">
+          <div class="icon">💗</div>
+          <h3>Tình yêu thương</h3>
+          <p>Cảm ơn cô vì đã luôn quan tâm đến tập thể lớp.</p>
+        </div>
+      </div>
+      <button class="btn" onclick="next()">Cùng nhìn lại nhé →</button>
+    </div>
+  </section>
+
+  <!-- 06: ALBUM -->
+  <section class="screen" id="s6">
+    <div class="top-label">CHAPTER 05 · OUR MEMORIES</div>
+    <div class="inner">
+      <div class="eyebrow">Little moments, precious memories</div>
+      <h2 class="section-title">Khu vườn kỷ niệm</h2>
+      <p class="description">Mỗi bức ảnh là một khoảnh khắc nhỏ, góp lại thành một miền ký ức thật đẹp.</p>
+      <div class="gallery">
+        <div class="photo-card" style="--tilt:-2deg">
+          <div class="photo-frame">
+            <div class="photo-placeholder">Ảnh kỷ niệm 01</div>
+            <img src="images/anh1.jpg" alt="Kỷ niệm 1" onload="this.previousElementSibling.style.display='none'" onerror="this.style.display='none'">
+          </div>
+          <div class="photo-caption">Một ngày đáng nhớ</div>
+        </div>
+        <div class="photo-card" style="--tilt:2deg">
+          <div class="photo-frame">
+            <div class="photo-placeholder">Ảnh kỷ niệm 02</div>
+            <img src="images/anh2.jpg" alt="Kỷ niệm 2" onload="this.previousElementSibling.style.display='none'" onerror="this.style.display='none'">
+          </div>
+          <div class="photo-caption">Nụ cười thân quen</div>
+        </div>
+        <div class="photo-card" style="--tilt:1deg">
+          <div class="photo-frame">
+            <div class="photo-placeholder">Ảnh kỷ niệm 03</div>
+            <img src="images/anh3.jpg" alt="Kỷ niệm 3" onload="this.previousElementSibling.style.display='none'" onerror="this.style.display='none'">
+          </div>
+          <div class="photo-caption">Thanh xuân 8C5</div>
+        </div>
+        <div class="photo-card" style="--tilt:2deg">
+          <div class="photo-frame">
+            <div class="photo-placeholder">Ảnh kỷ niệm 04</div>
+            <img src="images/anh4.jpg" alt="Kỷ niệm 4" onload="this.previousElementSibling.style.display='none'" onerror="this.style.display='none'">
+          </div>
+          <div class="photo-caption">Bên nhau mỗi ngày</div>
+        </div>
+        <div class="photo-card" style="--tilt:-2deg">
+          <div class="photo-frame">
+            <div class="photo-placeholder">Ảnh kỷ niệm 05</div>
+            <img src="images/anh5.jpg" alt="Kỷ niệm 5" onload="this.previousElementSibling.style.display='none'" onerror="this.style.display='none'">
+          </div>
+          <div class="photo-caption">Khoảnh khắc yêu thương</div>
+        </div>
+        <div class="photo-card" style="--tilt:1deg">
+          <div class="photo-frame">
+            <div class="photo-placeholder">Ảnh kỷ niệm 06</div>
+            <img src="images/anh6.jpg" alt="Kỷ niệm 6" onload="this.previousElementSibling.style.display='none'" onerror="this.style.display='none'">
+          </div>
+          <div class="photo-caption">Mãi là kỷ niệm</div>
+        </div>
+      </div>
+      <button class="btn" onclick="next()">Một điều muốn nói với cô →</button>
+    </div>
+  </section>
+
+  <!-- 07: TÂM TÌNH -->
+  <section class="screen" id="s7">
+    <div class="top-label">CHAPTER 06 · FROM THE HEART</div>
+    <div class="inner">
+      <div class="eyebrow">If we could say one thing</div>
+      <h2 class="big-script">Nếu được nói một điều...</h2>
+      <div class="quote-card">
+        <div class="quote-mark">“</div>
+        <p>
+          Chúng em không biết phải dùng bao nhiêu lời
+          mới có thể nói hết lòng biết ơn dành cho cô.
+          Chỉ mong rằng trên hành trình gieo mầm tri thức,
+          cô sẽ luôn nhận lại thật nhiều yêu thương,
+          như cách cô đã trao đi.
+        </p>
+        <div class="quote-mark">”</div>
+      </div>
+      <p class="description">Cô hãy luôn hạnh phúc nhé, vì cô xứng đáng với những điều tốt đẹp nhất!</p>
+      <button class="btn" onclick="next()">Nhận những lời chúc →</button>
+    </div>
+  </section>
+
+  <!-- 08: LỜI CHÚC -->
+  <section class="screen" id="s8">
+    <div class="top-label">CHAPTER 07 · EIGHT LITTLE WISHES</div>
+    <div class="inner">
+      <div class="eyebrow">With all our love</div>
+      <h2 class="section-title">Tám lời chúc nhỏ</h2>
+      <p class="description">Tám lời chúc, tám điều tốt đẹp mà 8C5 muốn gửi đến cô.</p>
+      <div class="wishes">
+        <div class="wish"><b>🌷</b><span>Luôn mạnh khỏe</span></div>
+        <div class="wish"><b>☀️</b><span>Mãi vui vẻ</span></div>
+        <div class="wish"><b>🦋</b><span>Luôn xinh đẹp</span></div>
+        <div class="wish"><b>🍀</b><span>Gặp nhiều may mắn</span></div>
+        <div class="wish"><b>💐</b><span>Tràn đầy năng lượng</span></div>
+        <div class="wish"><b>✨</b><span>Thành công rực rỡ</span></div>
+        <div class="wish"><b>💗</b><span>Luôn hạnh phúc</span></div>
+        <div class="wish"><b>🌈</b><span>Vạn điều như ý</span></div>
+      </div>
+      <button class="btn" onclick="next()">Đi đến món quà cuối cùng →</button>
+    </div>
+  </section>
+
+  <!-- 09: KẾT THÚC -->
+  <section class="screen" id="s9">
+    <div class="top-label">CHAPTER 08 · FOREVER WITH GRATITUDE</div>
+    <div class="inner">
+      <div class="eyebrow">A heart full of gratitude</div>
+      <div class="heart" id="heart"></div>
+      <h2 class="final-title">Cảm ơn cô vì tất cả!</h2>
+      <div class="gold-line"></div>
+      <p class="final-note">
+        Chúc cô có một ngày 20/11 thật nhiều niềm vui,
+        yêu thương và những điều ngọt ngào nhất.
+        Mong rằng nụ cười sẽ luôn nở trên môi cô!
+      </p>
+      <p class="script" style="font-size:30px;color:#aa7892">Tập thể lớp 8C5 ♡</p>
+      <p class="eyebrow">20 · 11 · 2026</p>
+      <button class="btn btn-light" onclick="goTo(0)">♡ Xem lại câu chuyện</button>
+    </div>
+  </section>
+
+  <div class="controls" id="controls">
+    <button class="dot active" aria-label="Màn 1" onclick="goTo(0)"></button>
+    <button class="dot" aria-label="Màn 2" onclick="goTo(1)"></button>
+    <button class="dot" aria-label="Màn 3" onclick="goTo(2)"></button>
+    <button class="dot" aria-label="Màn 4" onclick="goTo(3)"></button>
+    <button class="dot" aria-label="Màn 5" onclick="goTo(4)"></button>
+    <button class="dot" aria-label="Màn 6" onclick="goTo(5)"></button>
+    <button class="dot" aria-label="Màn 7" onclick="goTo(6)"></button>
+    <button class="dot" aria-label="Màn 8" onclick="goTo(7)"></button>
+    <button class="dot" aria-label="Màn 9" onclick="goTo(8)"></button>
+  </div>
+
+  <button class="music" id="musicBtn" aria-label="Bật hoặc tắt nhạc" onclick="toggleMusic()">♫</button>
+  <audio id="bgMusic" src="nhac.mp3" loop preload="none"></audio>
+</div>
+
+<script>
+const screens = [...document.querySelectorAll(".screen")];
+const dots = [...document.querySelectorAll(".dot")];
+const envelope = document.getElementById("envelope");
+const music = document.getElementById("bgMusic");
+const musicBtn = document.getElementById("musicBtn");
+
+let current = 0;
+let musicStarted = false;
+
+function goTo(index) {
+  if (index < 0 || index >= screens.length) return;
+
+  screens[current].classList.remove("active");
+  current = index;
+  screens[current].classList.add("active");
+
+  dots.forEach((dot, i) => dot.classList.toggle("active", i === current));
+
+  if (current === 8) createHeart();
+}
+
+function next() { goTo(current + 1); }
+function previous() { goTo(current - 1); }
+
+async function startMusic() {
+  if (musicStarted) return;
+  try {
+    await music.play();
+    musicStarted = true;
+    musicBtn.classList.add("playing");
+  } catch (error) {
+    console.log("Trình duyệt chưa cho phát nhạc.");
+  }
+}
+
+function openLetter() {
+  envelope.classList.add("opened");
+  startMusic();
+  setTimeout(() => goTo(1), 1200);
+}
+
+async function toggleMusic() {
+  if (music.paused) {
+    try {
+      await music.play();
+      musicStarted = true;
+      musicBtn.classList.add("playing");
+    } catch (error) {
+      alert("Chưa thể phát nhạc. Hãy kiểm tra file nhac.mp3 nhé!");
+    }
+  } else {
+    music.pause();
+    musicBtn.classList.remove("playing");
+  }
+}
+
+/* CÁNH HOA */
+const petals = document.getElementById("petals");
+for (let i = 0; i < 22; i++) {
+  const petal = document.createElement("div");
+  petal.className = "petal";
+  petal.style.left = Math.random() * 100 + "%";
+  petal.style.animationDuration = (9 + Math.random() * 12) + "s";
+  petal.style.animationDelay = (-Math.random() * 18) + "s";
+  petal.style.opacity = .25 + Math.random() * .55;
+  petals.appendChild(petal);
+}
+
+/* TRÁI TIM HOA */
+function createHeart() {
+  const holder = document.getElementById("heart");
+  if (holder.dataset.created) return;
+  holder.dataset.created = "yes";
+
+  const flowers = ["🌸", "🌷", "🌹", "🌺", "✿", "💮"];
+  const points = [];
+
+  for (let i = 0; i < 110; i++) {
+    const t = Math.PI * 2 * i / 110;
+    const x = 16 * Math.pow(Math.sin(t), 3);
+    const y = 13 * Math.cos(t) - 5 * Math.cos(2*t) - 2 * Math.cos(3*t) - Math.cos(4*t);
+
+    points.push({
+      x: 50 + x * 2.25,
+      y: 48 - y * 2.15
+    });
+  }
+
+  points.forEach((point, i) => {
+    const flower = document.createElement("span");
+    flower.className = "heart-flower";
+    flower.textContent = flowers[i % flowers.length];
+    flower.style.left = point.x + "%";
+    flower.style.top = point.y + "%";
+    flower.style.animationDelay = (i % 8) * -.3 + "s";
+    flower.style.fontSize = (15 + Math.random() * 9) + "px";
+    holder.appendChild(flower);
+  });
+}
+
+/* VUỐT ĐỂ CHUYỂN MÀN HÌNH TRÊN ĐIỆN THOẠI */
+let touchStartX = 0;
+let touchStartY = 0;
+
+document.addEventListener("touchstart", e => {
+  touchStartX = e.changedTouches[0].screenX;
+  touchStartY = e.changedTouches[0].screenY;
+}, {passive: true});
+
+document.addEventListener("touchend", e => {
+  const dx = e.changedTouches[0].screenX - touchStartX;
+  const dy = e.changedTouches[0].screenY - touchStartY;
+
+  if (Math.abs(dx) > 80 && Math.abs(dx) > Math.abs(dy)) {
+    if (dx < 0) next();
+    else previous();
+  }
+}, {passive: true});
+
+/* PHÍM MŨI TÊN */
+document.addEventListener("keydown", e => {
+  if (e.key === "ArrowRight") next();
+  if (e.key === "ArrowLeft") previous();
+});
+</script>
+</body>
+</html>
